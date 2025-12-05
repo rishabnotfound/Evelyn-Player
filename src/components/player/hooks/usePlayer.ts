@@ -6,13 +6,14 @@ import {
   playerStatus,
 } from "@/stores/player/slices/source";
 import { usePlayerStore } from "@/stores/player/store";
-import { SourceSliceSource } from "@/stores/player/utils/qualities";
 import { ProgressMediaItem, useProgressStore } from "@/stores/progress";
 
 export interface Source {
   url: string;
   type: "hls" | "mp4";
 }
+
+export type SourceSliceSource = Source;
 
 function getProgress(
   items: Record<string, ProgressMediaItem>,
