@@ -49,14 +49,21 @@ Or use via CDN:
   <script src="https://cdn.jsdelivr.net/npm/rezeplayer@latest/dist/rezeplayer.iife.js"></script>
 
   <script>
-    // Initialize RezePlayer
+    // Initialize RezePlayer with multiple servers
     RezePlayer.make('#player', {
-      source: {
-        title: 'My Video',
-        src: 'https://content.jwplatform.com/manifests/yp34SRmf.m3u8',
-        poster: 'https://example.com/poster.jpg',
-        type: 'hls' // or 'mp4', auto-detected if not specified
-      },
+      title: 'My Video',
+      servers: [
+        {
+          name: 'Server 1',
+          url: 'https://content.jwplatform.com/manifests/yp34SRmf.m3u8',
+          type: 'hls'
+        },
+        {
+          name: 'Server 2',
+          url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+          type: 'hls'
+        }
+      ],
       subtitles: [
         {
           name: 'English',
@@ -72,7 +79,8 @@ Or use via CDN:
       ],
       autoPlay: true,
       volume: 1,
-      startTime: 0
+      startTime: 0,
+      enableWatchParty: false  // Optional: disable watch party
     });
   </script>
 </body>
@@ -117,12 +125,12 @@ Creates a new player instance.
 
 ```typescript
 interface RezePlayerOptions {
-  source: {
-    src: string;              // Video URL
-    title?: string;           // Video title
-    poster?: string;          // Poster image URL
+  servers: Array<{
+    name: string;             // Server name
+    url: string;              // Video URL
     type?: 'hls' | 'mp4';    // Stream type (auto-detected if not specified)
-  };
+  }>;
+  title?: string;             // Video title (default: 'Reze Player')
   subtitles?: Array<{
     name: string;             // Subtitle display name
     src: string;              // Subtitle file URL (SRT or VTT)
@@ -132,6 +140,7 @@ interface RezePlayerOptions {
   autoPlay?: boolean;         // Auto-play video (default: true)
   volume?: number;            // Initial volume 0-1 (default: 1)
   startTime?: number;         // Start time in seconds (default: 0)
+  enableWatchParty?: boolean; // Enable watch party feature (default: true)
 }
 ```
 
