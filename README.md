@@ -18,10 +18,10 @@ A standalone HLS/MP4 video player with subtitle support, watch party, and Chrome
 
 ```html
 <!-- Include CSS -->
-<link rel="stylesheet" href="./dist/assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.4/dist/assets/style.css">
 
 <!-- Include JS -->
-<script src="./dist/rezeplayer.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.4/dist/rezeplayer.iife.js"></script>
 ```
 
 ### 2. Add Container
@@ -66,20 +66,20 @@ RezePlayer.make('#player', {
 
 ```html
 <!DOCTYPE html>
-<html lang="en" data-full>
+<html lang="en" dir="ltr" data-full> <!--VERY IMPORTANT -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
   <title>RezePlayer Example</title>
 
   <!-- Include RezePlayer CSS -->
-  <link rel="stylesheet" href="./dist/assets/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.4/dist/assets/style.css">
 </head>
 <body>
   <div id="root"></div>
 
   <!-- Include RezePlayer JS -->
-  <script src="./dist/rezeplayer.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.4/dist/rezeplayer.iife.js"></script>
 
   <script>
     RezePlayer.make('#root', {
@@ -178,7 +178,7 @@ player.destroy();        // Remove player
 For a full-page player, add `data-full` attribute to your HTML tag:
 
 ```html
-<html lang="en" data-full>
+<html lang="en" dir="ltr" data-full> 
 ```
 
 This applies full-page styling (no scrolling, full viewport height).
