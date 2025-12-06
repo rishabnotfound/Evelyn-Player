@@ -1,6 +1,6 @@
 <p align="center">
       <img
-        src="./logo.png"
+        src="./public/logo.png"
         width="200"
         height="200"
       />
@@ -26,10 +26,10 @@ A standalone HLS/MP4 video player with subtitle support, watch party, and Chrome
 
 ```html
 <!-- Include CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.4/dist/assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.6/dist/assets/style.css">
 
 <!-- Include JS -->
-<script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.4/dist/rezeplayer.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.6/dist/rezeplayer.iife.js"></script>
 ```
 
 ### 2. Add Container
@@ -74,53 +74,79 @@ RezePlayer.make('#player', {
 
 ```html
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-full> <!--VERY IMPORTANT -->
+<html lang="en" dir="ltr" data-full> <!--VERY IMPORTANT TO INCLUDE 
+                                    OR ELSE STYLING WILL BE BROKEN-->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
   <title>RezePlayer Example</title>
 
   <!-- Include RezePlayer CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.4/dist/assets/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.6/dist/assets/style.css">
 </head>
 <body>
   <div id="root"></div>
 
   <!-- Include RezePlayer JS -->
-  <script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.4/dist/rezeplayer.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.6/dist/rezeplayer.iife.js"></script>
 
   <script>
     RezePlayer.make('#root', {
       title: 'Reze Player',
       servers: [
         {
-          name: 'Comet',
-          url: 'https://artplayer.org/assets/sample/video.mp4',
-          type: 'mp4'
+          name: 'HLS Sample',
+          url: 'https://rezeplayer.vercel.app/reze/hls/master.m3u8',
+          type: 'hls'
         },
         {
-          name: 'Star',
-          url: 'https://content.jwplatform.com/manifests/yp34SRmf.m3u8',
-          type: 'hls'
+          name: 'MP4 Sample',
+          url: 'https://rezeplayer.vercel.app/reze/mp4/trailer.mp4',
+          type: 'mp4'
         }
       ],
       subtitles: [
         {
           name: 'Japanese',
-          language: 'ja',
-          src: 'https://artplayer.org/assets/sample/subtitle.jp.srt',
+          flagsapi: 'https://flagsapi.com/JP/flat/64.png', //optional prop
+          src: 'https://rezeplayer.vercel.app/reze/subs/ja.vtt',
           default: true
         },
         {
+          name: 'English',
+          flagsapi: 'https://flagsapi.com/US/flat/64.png', 
+          src: 'https://rezeplayer.vercel.app/reze/subs/eng.vtt',
+        },
+        {
+          name: 'French',
+          flagsapi: 'https://flagsapi.com/FR/flat/64.png',
+          src: 'https://rezeplayer.vercel.app/reze/subs/french.vtt',
+        },
+        {
+          name: 'Russian',
+          flagsapi: 'https://flagsapi.com/RU/flat/64.png',
+          src: 'https://rezeplayer.vercel.app/reze/subs/russian.vtt',
+        },
+        {
+          name: 'Korean',
+          flagsapi: 'https://flagsapi.com/KP/flat/64.png',
+          src: 'https://rezeplayer.vercel.app/reze/subs/koreon.vtt',
+        },
+        {
           name: 'Chinese',
-          language: 'zh',
-          src: 'https://artplayer.org/assets/sample/subtitle.cn.srt'
+          flagsapi: 'https://flagsapi.com/CN/flat/64.png',
+          src: 'https://rezeplayer.vercel.app/reze/subs/chinese.vtt',
+        },
+        {
+          name: 'Arabic',
+          flagsapi: 'https://flagsapi.com/SA/flat/64.png',
+          src: 'https://rezeplayer.vercel.app/reze/subs/arabic.vtt',
         }
       ],
-      autoPlay: true,
-      volume: 1,
-      startTime: 0,
-      enableWatchParty: true
+      autoPlay: true, //depends on browser 
+      volume: 1, //range is from 0 to 1 it can be float too
+      startTime: 0, //time is in seconds
+      enableWatchParty: true //default is true
     });
   </script>
 </body>
