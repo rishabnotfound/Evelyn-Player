@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RezePlayer Examples</title>
+
+  <!-- Include RezePlayer CSS -->
+  <link rel="stylesheet" href="./dist/assets/style.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #player {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="player"></div>
+
+  <!-- Include RezePlayer JS -->
+  <script src="./dist/rezeplayer.iife.js"></script>
+
+  <script>
+    // Initialize RezePlayer with ALL servers from server.ts
+    // User can switch between servers in the Sources menu
+    RezePlayer.make('#player', {
+      title: 'Reze Player',
+      servers: [
+        {
+          name: 'Comet',
+          url: 'https://artplayer.org/assets/sample/video.mp4',
+          type: 'mp4'
+        },
+        {
+          name: 'Star',
+          url: 'https://content.jwplatform.com/manifests/yp34SRmf.m3u8',
+          type: 'hls'
+        },
+        {
+          name: 'Galaxy',
+          url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+          type: 'hls'
+        },
+        {
+          name: 'Nova',
+          url: 'https://files.vidstack.io/sprite-fight/720p.mp4',
+          type: 'mp4'
+        }
+      ],
+      subtitles: [
+        {
+          name: 'Japanese',
+          language: 'ja',
+          src: 'https://artplayer.org/assets/sample/subtitle.jp.srt',
+          default: true
+        },
+        {
+          name: 'Chinese',
+          language: 'zh',
+          src: 'https://artplayer.org/assets/sample/subtitle.cn.srt'
+        }
+      ],
+      autoPlay: true,
+      volume: 1,
+      startTime: 0,
+      enableWatchParty: true
+    });
+  </script>
+</body>
+</html>

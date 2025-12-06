@@ -98,7 +98,7 @@ function serverToConfig(server: Server): PlayerConfig {
       captions: commonCaptions,
     },
     meta: {
-      title: 'Evelyn Player',
+      title: 'Reze Player',
       description: `Playing from ${server.name}`,
     },
     settings: {

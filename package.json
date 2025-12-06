@@ -1,8 +1,31 @@
 {
-  "name": "Evelyn-Player",
-  "version": "4.7.0",
-  "private": true,
-  "homepage": "https://github.com/rishabnotfound/Evelyn-Player",
+  "name": "rezeplayer",
+  "author": "rishabnotofound",
+  "version": "1.1.2",
+  "description": "Professional HLS/MP4 video player with subtitle support",
+  "homepage": "https://github.com/rishabnotfound/RezePlayer",
+  "main": "dist/rezeplayer.umd.js",
+  "module": "dist/rezeplayer.es.js",
+  "types": "dist/rezeplayer.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/rezeplayer.es.js",
+      "require": "./dist/rezeplayer.umd.js",
+      "types": "./dist/rezeplayer.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "video-player",
+    "hls",
+    "mp4",
+    "subtitles",
+    "react",
+    "player"
+  ],
   "scripts": {
     "dev": "vite --config vite.standalone.config.mts --host",
     "build": "vite build --config vite.standalone.config.mts",

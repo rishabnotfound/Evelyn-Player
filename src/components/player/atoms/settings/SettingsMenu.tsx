@@ -49,6 +49,10 @@ export function SettingsMenu({ id }: { id: string }) {
 
   const downloadable = source?.type === "file" || source?.type === "hls";
 
+  // Check if watch party is enabled from config
+  const config = (window as any).__REZEPLAYER_CONFIG__;
+  const enableWatchParty = config?.settings?.enableWatchParty ?? true;
+
   const handleWatchPartyClick = () => {
     if (downloadUrl) {
       const watchPartyUrl = `https://www.watchparty.me/create?video=${encodeURIComponent(
@@ -84,14 +88,16 @@ export function SettingsMenu({ id }: { id: string }) {
         >
           {t("player.menus.settings.sourceItem")}
         </Menu.ChevronLink>
-        <Menu.Link
-          clickable
-          onClick={handleWatchPartyClick}
-          rightSide={<Icon className="text-xl" icon={Icons.WATCH_PARTY} />}
-          className={downloadable ? "opacity-100" : "opacity-50"}
-        >
-          {t("Watch Party")}
-        </Menu.Link>
+        {enableWatchParty && (
+          <Menu.Link
+            clickable
+            onClick={handleWatchPartyClick}
+            rightSide={<Icon className="text-xl" icon={Icons.WATCH_PARTY} />}
+            className={downloadable ? "opacity-100" : "opacity-50"}
+          >
+            {t("Watch Party")}
+          </Menu.Link>
+        )}
       </Menu.Section>
 
       <Menu.SectionTitle>

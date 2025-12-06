@@ -52,8 +52,19 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    lib: {
+      entry: path.resolve(__dirname, 'src/rezeplayer.tsx'),
+      name: 'RezePlayer',
+      formats: ['es', 'umd', 'iife'],
+      fileName: (format) => `rezeplayer.${format}.js`
+    },
     rollupOptions: {
-      input: path.resolve(__dirname, 'index.html'),
+      output: {
+        // Bundle everything including React
+        inlineDynamicImports: true,
+        assetFileNames: 'assets/[name][extname]',
+        manualChunks: undefined
+      }
     }
   },
   css: {

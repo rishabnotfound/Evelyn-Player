@@ -7,9 +7,9 @@ import { usePlayerStore } from "@/stores/player/store";
 import { SettingsRouter } from "@/components/player/atoms/Settings";
 import { ThumbnailScraper } from "@/components/player/internals/ThumbnailScraper";
 import { usePreferencesStore } from "@/stores/preferences";
-import { getConfigForServer, servers } from "@/server";
 import { addCachedMetadata } from "@/backend/helpers/providerApi";
-import { findWorkingServer } from "@/utils/serverManager";
+import { useSubtitleStore } from "@/stores/subtitles";
+import { downloadCaption } from "@/backend/helpers/subs";
 
 export function StandalonePlayer() {
   const { showTargets, showTouchTargets } = useShouldShowControls();
@@ -22,48 +22,111 @@ export function StandalonePlayer() {
 
   const status = usePlayerStore((s) => s.status);
   const isLoading = usePlayerStore((s) => s.mediaPlaying.isLoading);
-  const { playMedia, setMeta, reset } = usePlayer();
+  const { playMedia, setMeta } = usePlayer();
 
-  const loadServer = useCallback(async (serverIndex: number) => {
-    try {
-      const config = getConfigForServer(serverIndex);
+  const loadServer = useCallback((serverIndex: number) => {
+    const config = (window as any).__REZEPLAYER_CONFIG__;
+    if (!config || !config.servers || serverIndex >= config.servers.length) return;
 
-      setMeta({
-        type: 'movie',
-        title: config.meta.title,
-        tmdbId: 'standalone-video',
-      });
+    const server = config.servers[serverIndex];
 
-      const source = {
-        type: config.stream.type,
-        url: config.stream.url,
-      };
+    setMeta({
+      type: 'movie',
+      title: config.meta.title || 'Video',
+      tmdbId: 'standalone-video',
+    });
 
-      const captions = config.stream.captions?.map(cap => ({
-        id: cap.id,
-        language: cap.language,
-        hasCorsRestrictions: false,
-        url: cap.url,
-        type: cap.type,
-      })) || [];
+    const source = {
+      type: server.type,
+      url: server.url,
+    };
 
-      playMedia(
-        source as any,
-        captions,
-        config.stream.name,
-        config.settings.startTime
-      );
+    const captions = (config.subtitles || []).map((cap: any) => ({
+      id: cap.id,
+      language: cap.language,
+      hasCorsRestrictions: false,
+      url: cap.url,
+      type: cap.type,
+    }));
 
-      setCurrentServerIndex(serverIndex);
-    } catch (error) {
-      console.error(`Failed to load server ${serverIndex}:`, error);
-      throw error;
-    }
+    playMedia(
+      source as any,
+      captions,
+      server.name,
+      config.settings.startTime || 0
+    );
+
+    // Apply volume, autoPlay, and default subtitle after a short delay
+    setTimeout(() => {
+      const store = usePlayerStore.getState();
+      const display = store.display;
+
+      if (display) {
+        // Set volume
+        if (config.settings.defaultVolume !== undefined) {
+          display.setVolume(config.settings.defaultVolume);
+        }
+
+        // Handle autoPlay
+        if (config.settings.autoPlay === false) {
+          display.pause();
+        } else if (config.settings.autoPlay === true) {
+          display.play();
+        }
+      }
+
+      // Auto-select default subtitle
+      const defaultSubtitle = config.subtitles?.find((sub: any) => sub.default);
+      console.log('Default subtitle config:', defaultSubtitle);
+
+      if (defaultSubtitle) {
+        setTimeout(async () => {
+          const captionList = usePlayerStore.getState().captionList;
+          console.log('Caption list:', captionList);
+          console.log('Looking for language:', defaultSubtitle.language);
+
+          const caption = captionList.find((c: any) => c.language === defaultSubtitle.language);
+          console.log('Found caption:', caption);
+
+          if (caption) {
+            console.log('Auto-selecting default subtitle:', caption.language);
+            try {
+              const srtData = await downloadCaption(caption);
+              console.log('Downloaded SRT data, length:', srtData.length);
+
+              usePlayerStore.getState().setCaption({
+                id: caption.id,
+                language: caption.language,
+                url: caption.url,
+                srtData,
+              });
+
+              useSubtitleStore.getState().setLanguage(caption.language);
+              console.log('Default subtitle loaded successfully');
+            } catch (error) {
+              console.error('Error loading default subtitle:', error);
+            }
+          } else {
+            console.warn('Caption not found in caption list');
+          }
+        }, 1000);
+      } else {
+        console.log('No default subtitle specified');
+      }
+    }, 100);
+
+    setCurrentServerIndex(serverIndex);
   }, [playMedia, setMeta]);
 
   useEffect(() => {
-    // Register all servers in the metadata cache so they appear in Sources menu
-    servers.forEach((server) => {
+    const config = (window as any).__REZEPLAYER_CONFIG__;
+    if (!config) {
+      console.error('RezePlayer: No config found. Did you call RezePlayer.make()?');
+      return;
+    }
+
+    // Register all servers in metadata cache
+    config.servers.forEach((server: any) => {
       addCachedMetadata({
         id: server.name,
         name: server.name,
@@ -72,17 +135,20 @@ export function StandalonePlayer() {
       });
     });
 
-    // Load the first server by default
+    // Load first server by default
     loadServer(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
 
-  // Listen for source changes from the Sources menu
+  // Listen for source changes from Sources menu
   const sourceId = usePlayerStore((s) => s.sourceId);
   useEffect(() => {
     if (!sourceId || currentServerIndex === -1) return;
 
-    const serverIndex = servers.findIndex(s => s.name === sourceId);
+    const config = (window as any).__REZEPLAYER_CONFIG__;
+    if (!config) return;
+
+    const serverIndex = config.servers.findIndex((s: any) => s.name === sourceId);
     if (serverIndex !== -1 && serverIndex !== currentServerIndex) {
       console.log(`Switching to server: ${sourceId}`);
       loadServer(serverIndex);
