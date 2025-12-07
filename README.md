@@ -1,6 +1,6 @@
 <p align="center">
       <img
-        src="./public/logo.png"
+        src="https://rezeplayer.vercel.app/logo.png"
         width="200"
         height="200"
       />
