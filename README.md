@@ -26,10 +26,10 @@ A standalone HLS/MP4 video player with subtitle support, watch party, Chromecast
 
 ```html
 <!-- Include CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.9/dist/assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.10/dist/assets/style.css">
 
 <!-- Include JS -->
-<script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.9/dist/rezeplayer.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.10/dist/rezeplayer.iife.js"></script>
 ```
 
 ### 2. Add Container
@@ -82,13 +82,13 @@ RezePlayer.make('#player', {
   <title>RezePlayer Example</title>
 
   <!-- Include RezePlayer CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.9/dist/assets/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.10/dist/assets/style.css">
 </head>
 <body>
   <div id="root"></div>
 
   <!-- Include RezePlayer JS -->
-  <script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.9/dist/rezeplayer.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.10/dist/rezeplayer.iife.js"></script>
 
   <script>
     RezePlayer.make('#root', {
