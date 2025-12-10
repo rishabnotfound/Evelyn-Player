@@ -9,19 +9,24 @@ import { usePreferencesStore } from "@/stores/preferences";
 import { processCdnLink } from "@/utils/cdn";
 import { isSafari } from "@/utils/detectFeatures";
 
-function makeQueue(layers: number): number[] {
-  const output = [0, 1];
-  let segmentSize = 0.5;
-  let lastSegmentAmount = 0;
-  for (let layer = 0; layer < layers; layer += 1) {
-    const segmentAmount = 1 / segmentSize - 1;
-    for (let i = 0; i < segmentAmount - lastSegmentAmount; i += 1) {
-      const offset = i * segmentSize * 2;
-      output.push(offset + segmentSize);
+function makeQueue(duration: number, intervalMs: number): number[] {
+  // Convert interval from milliseconds to seconds
+  const intervalSec = intervalMs / 1000;
+
+  // Calculate how many thumbnails we can fit in the video duration
+  const thumbnailCount = Math.floor(duration / intervalSec);
+
+  // Generate timestamps at regular intervals
+  const output: number[] = [0]; // Always start at 0
+
+  for (let i = 1; i <= thumbnailCount; i += 1) {
+    const timestamp = i * intervalSec;
+    // Don't add if it exceeds duration
+    if (timestamp < duration) {
+      output.push(timestamp);
     }
-    lastSegmentAmount = segmentAmount;
-    segmentSize /= 2;
   }
+
   return output;
 }
 
@@ -131,10 +136,15 @@ class ThumnbnailWorker {
     if (!vid) return;
     await this.initVideo();
 
-    const queue = makeQueue(8); // More layers = more thumbnails (every ~5s)
+    // Get thumbnail interval from config (in milliseconds), default to 10 seconds
+    const config = (window as any).__REZEPLAYER_CONFIG__;
+    const intervalMs = config?.settings?.thumbsInterval || 10000;
+
+    // Generate thumbnails at regular intervals based on config
+    const queue = makeQueue(vid.duration, intervalMs);
     for (let i = 0; i < queue.length; i += 1) {
       if (this.interrupted) return;
-      await this.takeSnapshot(vid.duration * queue[i]);
+      await this.takeSnapshot(queue[i]);
     }
   }
 }
@@ -152,6 +162,12 @@ export function ThumbnailScraper() {
   const sourceSeralized = JSON.stringify(source);
 
   const start = useCallback(() => {
+    // Check if thumbnail generation is enabled
+    const config = (window as any).__REZEPLAYER_CONFIG__;
+    const thumbsGenerate = config?.settings?.thumbsGenerate ?? true;
+
+    if (!thumbsGenerate) return;
+
     let inputStream = null;
     if (source)
       inputStream = selectQuality(source, {

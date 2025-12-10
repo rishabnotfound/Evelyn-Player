@@ -399,14 +399,24 @@
       <a href="https://github.com/rishabnotfound/rezeplayer" class="demo-link secondary">GitHub</a>
     </div>
 
+<h2>Preview</h2>
+<p align="center">
+  <img 
+    src="/preview.png" 
+    alt="Preview"
+    style="max-width:100%; height:auto; display:inline-block;"
+  />
+</p>
+
+
     <h2>Quick Start</h2>
     <p>Get up and running in three simple steps.</p>
     <h3>1. Full Page Mode IMPORTANT</h3>
     <p>For a clean, full-page player experience, add the <code class="n">data-full</code> attribute to your root <code class="t">html</code> tag, or else player styling will be broken cuz of tailwind limitation of preflight lmao</p>
     <pre><button class="copy-btn" data-target="code5">Copy</button><code id="code5">&lt;<span class="t">html</span> <span class="a">lang</span>=<span class="s">"en"</span> <span class="a">data-full</span>&gt;</code></pre>
     <h3>2. Include CSS and JS</h3>
-    <pre><button class="copy-btn" data-target="code1">Copy</button><code id="code1">&lt;<span class="t">link</span> <span class="a">rel</span>=<span class="s">"stylesheet"</span> <span class="a">href</span>=<span class="s">""https://cdn.jsdelivr.net/npm/rezeplayer@1.1.11/dist/assets/style.css"</span>&gt;
-&lt;<span class="t">script</span> <span class="a">src</span>=<span class="s">"https://cdn.jsdelivr.net/npm/rezeplayer@1.1.11/dist/rezeplayer.iife.js"</span>&gt;&lt;/<span class="t">script</span>&gt;</code></pre>
+    <pre><button class="copy-btn" data-target="code1">Copy</button><code id="code1">&lt;<span class="t">link</span> <span class="a">rel</span>=<span class="s">"stylesheet"</span> <span class="a">href</span>=<span class="s">""https://cdn.jsdelivr.net/npm/rezeplayer@1.1.12/dist/assets/style.css"</span>&gt;
+&lt;<span class="t">script</span> <span class="a">src</span>=<span class="s">"https://cdn.jsdelivr.net/npm/rezeplayer@1.1.12/dist/rezeplayer.iife.js"</span>&gt;&lt;/<span class="t">script</span>&gt;</code></pre>
     <h3>3. Add Container</h3>
     <p>The player will be initialized inside this element.</p>
     <pre><button class="copy-btn" data-target="code2">Copy</button><code id="code2">&lt;<span class="t">div</span> <span class="a">id</span>=<span class="s">"player"</span>&gt;&lt;/<span class="t">div</span>&gt;</code></pre>
@@ -441,6 +451,7 @@
   <span class="n">enableWatchParty</span>: <span class="k">true</span>, //default is true
   <span class="n">enableCast</span>: <span class="k">true</span>, //default is true
   <span class="n">themeColor</span>: <span class="s">'8652bb'</span>, //default is 8652bb
+  <span class="n">thumbsGenerate</span>: <span class="k">true</span>, //default is true
   <span class="n">thumbsInterval</span>: <span class="l">10000</span> //thumbnail interval in ms (default: 10000 = 10s) 
 });</code></pre>
     <h2>NPM Usage</h2>
@@ -543,12 +554,20 @@
     </div>
     <div class="api-option">
       <div class="api-option-signature">
+        <code>thumbsGenerate</code> <span class="highlight">Boolean</span>
+      </div>
+      <div class="api-option-description">
+        Enable thumbnails Auto Generation feature (default: <code class="k">true</code>).
+      </div>
+    </div>
+    <div class="api-option">
+      <div class="api-option-signature">
         <code>thumbsInterval</code> <span class="highlight">Number</span>
       </div>
       <div class="api-option-description">
         Thumbnail generation interval in milliseconds. For example, <code class="l">10000</code> means thumbnails will be generated every 10 seconds. Default: <code class="l">10000</code> (optional).
 
-        <div>WILL ADVICE TO KEEP IT 10s OR HIGHER TO AVOID PERFORMANCE ISSUES (MEMORY LEAK)</div>
+        <div>WILL ADVICE TO KEEP IT 10s OR HIGHER TO AVOID PERFORMANCE ISSUES</div>
       </div>
     </div>
 
@@ -599,8 +618,7 @@
       <span class="n">type</span>: <span class="s">'hls'</span>
     }
   ],
-  <span class="n">posterUrl</span>: <span class="s">'https://rezeplayer.vercel.app/reze/poster.png'</span>,  <span class="c">// Optional poster</span>
-  <span class="n">enableCast</span>: <span class="k">true</span>  <span class="c">// Enable Chromecast</span>
+  <span class="n">posterUrl</span>: <span class="s">'https://rezeplayer.vercel.app/reze/poster.png'</span> <span class="c">// Optional poster</span>
 });
 
 <span class="c">// Time tracking - Log every 1 second to avoid spam</span>
@@ -634,7 +652,7 @@
       <p>⚠️ <strong>Note:</strong> The player uses **scoped CSS** to avoid conflicts with your page styles. All player-specific styles are contained within the main player container.</p>
     </div>
     <div class="note">
-      <p>⚠️ <strong>Note:</strong> WILL ADVICE U TO KEEP THE THUMB INTERVAL 10s OR HIGHER TO AVOID PERFORMANCE ISSUES (MEMORY LEAK)</p>
+      <p>⚠️ <strong>Note:</strong> WILL ADVICE U TO KEEP THE THUMB INTERVAL 10s OR HIGHER TO AVOID PERFORMANCE ISSUES</p>
     </div>
 <div class="made-with-love">
   Made with <span>❤️</span> by 

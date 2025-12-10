@@ -42,6 +42,7 @@ export interface RezePlayerOptions {
   posterUrl?: string;  // Poster image URL to display before video plays
   themeColor?: string;  // Theme color for UI elements (hex value without #, e.g., "e01621")
   thumbsInterval?: number;  // Thumbnail generation interval in milliseconds (default: 10000 = 10s)
+  thumbsGenerate?: boolean;  // Enable/disable thumbnail generation (default: true)
 }
 
 export interface RezePlayerInstance {
@@ -108,6 +109,7 @@ class RezePlayer {
         posterUrl: this.options.posterUrl,
         themeColor: this.options.themeColor,
         thumbsInterval: this.options.thumbsInterval ?? 10000,  // Default 10 seconds
+        thumbsGenerate: this.options.thumbsGenerate ?? true,  // Default true
       },
     };
 

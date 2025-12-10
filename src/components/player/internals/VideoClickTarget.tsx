@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { PointerEvent, useCallback } from "react";
+import { PointerEvent, useCallback, useEffect } from "react";
 import { useEffectOnce, useTimeoutFn } from "react-use";
 
 import { useShouldShowVideoElement } from "@/components/player/internals/VideoContainer";
@@ -14,12 +14,24 @@ export function VideoClickTarget(props: { showingControls: boolean }) {
     (s) => s.updateInterfaceHovering,
   );
   const hovering = usePlayerStore((s) => s.interface.hovering);
+  const isSeeking = usePlayerStore((s) => s.interface.isSeeking);
   const [_, cancel, reset] = useTimeoutFn(() => {
     updateInterfaceHovering(PlayerHoverState.NOT_HOVERING);
   }, 3000);
   useEffectOnce(() => {
     cancel();
   });
+
+  // Cancel the timeout when user is seeking/dragging to keep controls visible
+  // Restart the timeout when seeking ends
+  useEffect(() => {
+    if (isSeeking) {
+      cancel();
+    } else if (hovering === PlayerHoverState.MOBILE_TAPPED) {
+      // Restart timeout after seeking ends on mobile
+      reset();
+    }
+  }, [isSeeking, hovering, cancel, reset]);
 
   const toggleFullscreen = useCallback(() => {
     display?.toggleFullscreen();

@@ -20,6 +20,12 @@ A standalone HLS/MP4 video player with subtitle support, watch party, Chromecast
 - ⚡ **Fast & Lightweight** - Optimized for performance
 - 📱 **Mobile Friendly** - Touch controls and responsive design
 
+## Preview
+
+<p align="center">
+    <img src="https://rezeplayer.vercel.app/preview.png" width="900" height="400" />
+</p>
+
 ## Quick Start
 
 ### 1. Full Page Mode IMPORTANT
@@ -32,10 +38,10 @@ For a clean, full-page player experience, add the data-full attribute to your ro
 
 ```html
 <!-- Include CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.11/dist/assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.12/dist/assets/style.css">
 
 <!-- Include JS -->
-<script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.11/dist/rezeplayer.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.12/dist/rezeplayer.iife.js"></script>
 ```
 
 ### 3. Add Container
@@ -74,6 +80,7 @@ RezePlayer.make('#player', {
   startTime: 0, //start position in seconds
   enableWatchParty: true, //default is true
   themeColor: '8652bb', //default is 8652bb
+  thumbsGenerate: true, //default is true
   thumbsInterval: 10000 //thumbnail generation interval in ms (default: 10000 = 10s)
 });
 ```
@@ -112,13 +119,13 @@ const player = make('#player', {
   <title>RezePlayer Example</title>
 
   <!-- Include RezePlayer CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.11/dist/assets/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.12/dist/assets/style.css">
 </head>
 <body>
   <div id="root"></div>
 
   <!-- Include RezePlayer JS -->
-  <script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.11/dist/rezeplayer.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/rezeplayer@1.1.12/dist/rezeplayer.iife.js"></script>
 
   <script>
     RezePlayer.make('#root', {
@@ -179,6 +186,7 @@ const player = make('#player', {
       startTime: 0, //time is in seconds
       enableWatchParty: true, //default is true
       enableCast: true, //default is true
+      thumbsGenerate: true, //default is true
       themeColor: '8652bb', //default is 8652bb
       thumbsInterval: 10000 //thumbnail generation interval in ms (default: 10000 = 10s)
     });
@@ -203,7 +211,8 @@ const player = make('#player', {
 | `enableCast` | `Boolean` | `true` | Enable Chromecast feature |
 | `posterUrl` | `String` | `undefined` | Poster image URL to display before video plays |
 | `themeColor` | `String` | `undefined` | Custom theme color (hex without #, e.g., "e01621") for progress bars, switches, and checkmarks |
-| `thumbsInterval` | `Number` | `10000` | Thumbnail generation interval in milliseconds (e.g., 10000 = 10 seconds) (WILL ADVICE U TO KEEP THE THUMB INTERVAL 10s OR HIGHER TO AVOID PERFORMANCE ISSUES LIKE MEMORY LEAK) |
+| `thumbsGenerate` | `Boolean` | `true` | Switch to toggle auto generation of thumbnails |
+| `thumbsInterval` | `Number` | `10000` | Thumbnail generation interval in milliseconds (e.g., 10000 = 10 seconds) (WILL ADVICE U TO KEEP THE THUMB INTERVAL 10s OR HIGHER TO AVOID PERFORMANCE ISSUES) |
 
 ### Server Object
 
@@ -220,7 +229,7 @@ const player = make('#player', {
 ```typescript
 {
   name: string;        // Display name (e.g., "English")
-  language: string;    // Language code (e.g., "en", "ja", "zh")
+  flagsapi: string;    // flagsapi url to display the flag icon of the subtitle (TOTALLY OPTIONAL)
   src: string;         // Subtitle file URL (SRT or VTT)
   default?: boolean    // Set as default subtitle
 }
@@ -283,8 +292,7 @@ const player = RezePlayer.make('#player', {
       type: 'hls'
     }
   ],
-  posterUrl: 'https://rezeplayer.vercel.app/reze/poster.png',  // Optional poster image
-  enableCast: true  // Enable Chromecast (default: true)
+  posterUrl: 'https://rezeplayer.vercel.app/reze/poster.png'  // Optional poster image
 });
 
 // Time tracking - Log every 1 second to avoid spam

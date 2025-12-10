@@ -118,18 +118,22 @@ export function ProgressBar() {
     setDraggingTime((dragPercentage / 100) * duration);
   }, [setDraggingTime, duration, dragPercentage]);
 
+  // Show thumbnail at drag position when dragging, otherwise at mouse hover position
+  const thumbnailPosition = dragging ? dragPercentage : mousePos;
+  const showThumbnail = dragging || mousePos > -1;
+
   return (
     <div className="w-full relative" dir="ltr">
       <div className="top-0 absolute inset-x-0">
         <div
           className="absolute bottom-0"
           style={{
-            left: `${mousePos}%`,
+            left: `${thumbnailPosition}%`,
           }}
         >
           <ThumbnailDisplay
-            at={Math.floor((mousePos / 100) * duration)}
-            show={mousePos > -1}
+            at={Math.floor((thumbnailPosition / 100) * duration)}
+            show={showThumbnail}
           />
         </div>
       </div>
